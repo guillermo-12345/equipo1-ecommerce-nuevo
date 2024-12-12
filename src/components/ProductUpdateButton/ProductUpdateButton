@@ -1,0 +1,26 @@
+import React from 'react';
+import axios from 'axios';
+
+const ProductUpdateButton = ({ userEmail, products, incompleteProfile }) => {
+  const handleSendEmail = async () => {
+    try {
+      await axios.post('http://localhost:3001/api/email/sendProductsUpdate', {
+        userEmail,
+        products,
+        incompleteProfile,
+      });
+      alert('Correo enviado con éxito');
+    } catch (error) {
+      console.error('Error al enviar el correo:', error);
+      alert('Hubo un error al enviar el correo');
+    }
+  };
+
+  return (
+    <button onClick={handleSendEmail} className="btn btn-primary">
+      Enviar actualización de productos
+    </button>
+  );
+};
+
+export default ProductUpdateButton;

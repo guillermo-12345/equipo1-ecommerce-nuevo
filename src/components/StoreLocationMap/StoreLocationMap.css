@@ -1,0 +1,21 @@
+.map-container {
+    width: 100%;
+    height: 400px;
+    margin: 20px 0;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+  }
+  
+  .store-details {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 1.1em;
+  }
+  
+  .contact-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  

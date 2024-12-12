@@ -1,0 +1,53 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.buttonCrearOrden {
+    width: 100%;
+    padding-top: 20p;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+.ContainerFormCheckout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Input {
+    text-transform: capitalize;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.InputEmail {
+    text-transform: lowercase;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.FormCheckout {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    background: rgb(231, 113, 200);
+    background: linear-gradient(90deg, rgba(231, 113, 200, 1) 18%, rgba(191, 57, 171, 0.3479166855046778) 96%);
+    padding: 30px;
+    margin: auto;
+    margin-top: 50px;
+    border-radius: 6px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.Label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
