@@ -10,7 +10,7 @@ const ItemListContainer = ({ greeting }) => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/products');
+      const response = await axios.get('https://equipo1-ecommerce-nuevo.vercel.app/api/products');
       const productsInStock = response.data.filter(product => product.stock > 0);
 
    
