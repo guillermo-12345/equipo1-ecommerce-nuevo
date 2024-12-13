@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
       // Verificar si el cliente ya existe por email
       let clientData;
       try {
-        const response = await axios.get(`http://localhost:3001/api/clients/email/${firebaseUser.email}`);
+        const response = await axios.get(`/api/clients/email/${firebaseUser.email}`);
         clientData = response.data;
       } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -52,11 +52,11 @@ export const AuthProvider = ({ children }) => {
             email: firebaseUser.email,
             cuit: null, // Se crea con CUIT null inicialmente
           };
-          const createResponse = await axios.post('http://localhost:3001/api/clients', newClient);
+          const createResponse = await axios.post('/api/clients', newClient);
           clientData = createResponse.data;
 
           // Enviar correo de bienvenida
-          await axios.post('http://localhost:3001/api/email/sendContactEmail', {
+          await axios.post('/api/email/sendContactEmail', {
             name: newClient.name,
             email: newClient.email,
             message: 'Gracias por registrarse con nosotros. Por favor, complete su perfil para disfrutar de todos nuestros servicios.'

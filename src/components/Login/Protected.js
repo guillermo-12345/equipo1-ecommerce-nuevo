@@ -34,7 +34,7 @@ const Protected = ({ setUserRole }) => {
     } else {
       const token = await user.getIdToken(); 
       try {
-        const response = await axios.post("http://localhost:3001/auth/verifyRole", {}, {
+        const response = await axios.post("/auth/verifyRole", {}, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUserRole(response.data.userRole); 

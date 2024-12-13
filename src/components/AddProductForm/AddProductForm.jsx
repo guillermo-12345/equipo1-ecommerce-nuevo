@@ -23,7 +23,7 @@ const AddProductForm = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:3001/api/productos', formData); 
+      const response = await axios.post('/api/productos', formData); 
       console.log('Producto agregado:', response.data);
       setFormData({
         category: '',

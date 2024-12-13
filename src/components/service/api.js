@@ -4,7 +4,7 @@ export const fetchProtectedData = async () => {
   const token = localStorage.getItem("firebaseToken");
 
   try {
-    const response = await axios.get("http://localhost:3001/api/protected-data", {
+    const response = await axios.get("/api/protected-data", {
       headers: {
         Authorization: `Bearer ${token}`, 
       },

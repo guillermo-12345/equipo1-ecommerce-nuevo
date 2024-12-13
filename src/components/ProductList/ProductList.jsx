@@ -46,7 +46,7 @@ const ProductList = () => {
 
   const handleSendProductUpdateEmail = async () => {
     try {
-      await axios.post('http://localhost:3001/api/email/sendProductsUpdate', {
+      await axios.post('/api/email/sendProductsUpdate', {
         products,
         message: 'Estos son los productos disponibles actualmente en nuestra tienda. Por favor, actualice su perfil si faltan datos.'
       });

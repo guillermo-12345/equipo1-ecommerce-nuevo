@@ -23,7 +23,7 @@ export default axiosInstance; */
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:3001/api",
+  baseURL: "https://equipo1-ecommerce-nuevo.vercel.app/api",
 });
 
 export default axiosInstance;
