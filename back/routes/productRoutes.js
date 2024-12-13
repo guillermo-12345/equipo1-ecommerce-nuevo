@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const verifyFirebaseToken = require('../middlewares/verifyFirebaseToken');
 const productController = require('../controllers/productController');
 
 // Ruta para obtener productos por categoría y proveedor
@@ -9,7 +10,7 @@ router.get('/by-category-and-supplier', productController.getProductsByCategoryA
 router.get('/by-category', productController.getProductsByCategory);
 
 // Rutas para el CRUD de productos
-router.get('/', productController.getAllProducts);
+router.get('/', verifyFirebaseToken, productController.getAllProducts);
 router.get('/:id', productController.getProductById);
 router.post('/', productController.createProduct);
 router.put('/:id', productController.updateProduct);

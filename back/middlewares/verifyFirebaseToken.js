@@ -1,4 +1,4 @@
-const admin = require('firebase-admin');
+/* const admin = require('firebase-admin');
 const serviceAccount = require('../credentials/firebase-key.json');
 const userController = require('../controllers/userController');
 
@@ -26,25 +26,28 @@ const verifyFirebaseToken = async (req, res, next) => {
   }
 };
 
-module.exports = verifyFirebaseToken;
-/* const admin = require('../admin/admin'); // Update the path to your Firebase Admin setup
+module.exports = verifyFirebaseToken; */
+const admin = require('../admin/admin');
+const userController = require('../controllers/userController'); 
 
 const verifyFirebaseToken = async (req, res, next) => {
-  const idToken = req.headers.authorization?.split('Bearer ')[1];
+  const token = req.headers.authorization?.replace("Bearer ", "");
 
-  if (!idToken) {
-    return res.status(401).json({ error: 'Unauthorized' });
+  if (!token) {
+    return res.status(401).json({ message: "No se proporcionó un token" });
   }
 
   try {
-    const decodedToken = await admin.auth().verifyIdToken(idToken);
-    req.uid = decodedToken.uid; // Add user ID to request object
-    next();
+    const decodedToken = await admin.auth().verifyIdToken(token);
+    req.uid = decodedToken.uid;
+    req.email = decodedToken.email;
+
+    // Registrar al usuario si no existe en la base de datos
+    await userController.registerUserIfNotExists(req, res, next);
   } catch (error) {
-    console.error('Error verifying Firebase token:', error);
-    res.status(401).json({ error: 'Unauthorized' });
+    console.error("Error al verificar el token:", error);
+    return res.status(401).json({ message: "Token no válido" });
   }
 };
 
 module.exports = verifyFirebaseToken;
- */

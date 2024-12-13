@@ -107,3 +107,26 @@ exports.getAllUsers = async () => {
     throw new Error('Error obteniendo los usuarios');
   }
 };
+
+
+const db = require('../models'); // Cambia esto según tu configuración de Sequelize
+
+const registerUserIfNotExists = async (req, res, next) => {
+  const { uid, email } = req;
+
+  try {
+    // Verificar si el usuario ya existe en la base de datos
+    const user = await db.User.findOne({ where: { uid } });
+    if (!user) {
+      // Si no existe, lo creamos
+      await db.User.create({ uid, email });
+    }
+
+    next(); // Continuar con el siguiente middleware o controlador
+  } catch (error) {
+    console.error("Error al registrar usuario:", error);
+    res.status(500).json({ message: "Error interno al verificar usuario" });
+  }
+};
+
+module.exports = { registerUserIfNotExists };

@@ -10,6 +10,7 @@ const profileRoutes = require('./routes/profileRoutes');
 const emailRoutes = require('./routes/emailRoutes');
 const purchaseRoutes = require('./routes/purchasesRoutes'); 
 const { dbConnection } = require('./config/db');
+require('dotenv').config();
 
 // Inicializar express
 const app = express();
