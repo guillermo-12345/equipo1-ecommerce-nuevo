@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const verifyFirebaseToken = require('../middlewares/verifyFirebaseToken');
 const productController = require('../controllers/productController');
 
 // Ruta para obtener productos por categoría y proveedor
@@ -17,3 +16,4 @@ router.put('/:id', productController.updateProduct);
 router.delete('/:id', productController.deleteProduct);
 
 module.exports = router;
+
