@@ -50,19 +50,13 @@ app.use((err, req, res, next) => {
 // Conectar y sincronizar la base de datos
 const port = process.env.PORT || 3001;
 
-dbConnection.authenticate()
-  .then(() => {
-    console.log('Base de datos sincronizada');
-    app.listen(port, "0.0.0.0", () => {
-      console.log(`Servidor escuchando en el puerto ${port}`);
-    });
-  })
+dbConnection.sync().then(() => {
+  app.listen(port, () => {
+    console.log(`Servidor corriendo en el puerto ${port}`);
+  });
+})
   .catch((error) => {
     console.error('Error al sincronizar la base de datos:', error);
   });
-
-
-
-  
 
   
