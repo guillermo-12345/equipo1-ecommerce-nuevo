@@ -14,7 +14,7 @@ const SupplierList = () => {
 
   const fetchSuppliers = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/api/suppliers');
+      const response = await axios.get('/api/suppliers');
       setSuppliers(response.data);
     } catch (error) {
       console.error('Error fetching suppliers:', error);
@@ -27,7 +27,7 @@ const SupplierList = () => {
     if (!isConfirmed) return;
 
     try {
-      await axios.delete(`http://localhost:3001/api/suppliers/${id}`);
+      await axios.delete(`/api/suppliers/${id}`);
       setSuppliers((prevSuppliers) =>
         prevSuppliers.filter((supplier) => supplier.id !== id)
       );

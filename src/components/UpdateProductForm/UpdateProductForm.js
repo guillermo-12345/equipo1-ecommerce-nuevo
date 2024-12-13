@@ -14,7 +14,7 @@ const UpdateProductForm = ({ productId }) => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/api/products/${productId}`);
+        const response = await axios.get(`/api/products/${productId}`);
         setFormData(response.data);
       } catch (error) {
         console.error('Error al obtener el producto:', error);

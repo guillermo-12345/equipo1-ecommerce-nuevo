@@ -39,7 +39,7 @@ const CheckOut = () => {
         type: 'venta',
       };
 
-      const response = await axios.post('http://localhost:3001/api/orders', objOrder);  // Pasar el objeto de la orden
+      const response = await axios.post('/api/orders', objOrder);  // Pasar el objeto de la orden
 
       if (response.data && response.data.id) {
         setOrderId(response.data.id);

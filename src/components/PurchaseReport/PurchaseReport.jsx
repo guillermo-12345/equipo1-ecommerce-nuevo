@@ -60,7 +60,7 @@ const PurchaseReport = () => {
 
   const fetchPurchases = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/api/purchases");
+      const response = await axios.get("/api/purchases");
       console.log("Datos recibidos de las compras:", response.data);
       if (response.data && Array.isArray(response.data)) {
         const purchases = response.data
@@ -82,7 +82,7 @@ const PurchaseReport = () => {
 
   const fetchSuppliers = async () => {
     try {
-      const response = await axios.get("http://localhost:3001/api/suppliers");
+      const response = await axios.get("/api/suppliers");
       if (response.data && Array.isArray(response.data)) {
         setSuppliers(response.data);
       } else {

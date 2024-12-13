@@ -20,8 +20,8 @@ const SalesReport = () => {
     const fetchData = async () => {
       try {
         const [ordersResponse, productsResponse] = await Promise.all([
-          axios.get('http://localhost:3001/api/orders?type=venta'),
-          axios.get('http://localhost:3001/api/products')
+          axios.get('/api/orders?type=venta'),
+          axios.get('/api/products')
         ]);
 
         console.log("Orders Response:", ordersResponse.data);

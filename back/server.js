@@ -16,8 +16,16 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-const allowedOrigins = ['https://equipo1-ecommerce-nuevo.vercel.app/'];
-app.use(cors({ origin: allowedOrigins }));
+const allowedOrigins = ["https://equipo1-ecommerce-nuevo.vercel.app"];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true, 
+  })
+);
+
 app.use(express.json());
 app.use(bodyParser.json());
 
@@ -59,3 +67,5 @@ dbConnection.sync().then(() => {
   .catch((error) => {
     console.error('Error al sincronizar la base de datos:', error);
   });
+
+

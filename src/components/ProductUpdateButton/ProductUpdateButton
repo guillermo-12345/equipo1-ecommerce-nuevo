@@ -4,7 +4,7 @@ import axios from 'axios';
 const ProductUpdateButton = ({ userEmail, products, incompleteProfile }) => {
   const handleSendEmail = async () => {
     try {
-      await axios.post('http://localhost:3001/api/email/sendProductsUpdate', {
+      await axios.post('/api/email/sendProductsUpdate', {
         userEmail,
         products,
         incompleteProfile,

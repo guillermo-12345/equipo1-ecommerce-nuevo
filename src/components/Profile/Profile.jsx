@@ -19,7 +19,7 @@ const Profile = () => {
     const fetchProfile = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:3001/api/clients/email/${user.email}`);
+        const response = await axios.get(`/api/clients/email/${user.email}`);
         setProfile(response.data);
       } catch (error) {
         console.error("Error fetching profile data:", error);
@@ -43,7 +43,7 @@ const Profile = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.put(`http://localhost:3001/api/clients/${profile.id}`, profile);
+      await axios.put(`/api/clients/${profile.id}`, profile);
       alert('Perfil actualizado correctamente');
     } catch (error) {
       console.error("Error actualizando el perfil:", error);
