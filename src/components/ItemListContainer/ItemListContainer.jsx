@@ -58,22 +58,17 @@ const ItemListContainer = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // Utiliza la URL base desde la variable de entorno
         const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/products`);
-
-        console.log("Respuesta de la API:", response.data);
-
-        // Validación: verifica que sea un arreglo
         const data = Array.isArray(response.data) ? response.data : [];
-        setProducts(data.filter((product) => product.stock > 0)); // Filtra productos con stock
+        setProducts(data.filter((product) => product.stock > 0));
       } catch (error) {
-        console.error("Error al obtener los productos:", error);
+        console.error('Error al obtener los productos:', error);
       }
     };
-
+  
     fetchProducts();
   }, []);
-
+  
   return (
     <div>
       <h1>Lista de Productos</h1>

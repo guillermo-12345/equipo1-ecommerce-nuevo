@@ -10,7 +10,7 @@ router.get('/by-category-and-supplier', productController.getProductsByCategoryA
 router.get('/by-category', productController.getProductsByCategory);
 
 // Rutas para el CRUD de productos
-router.get('/', verifyFirebaseToken, productController.getAllProducts);
+router.get('/', productController.getAllProducts);
 router.get('/:id', productController.getProductById);
 router.post('/', productController.createProduct);
 router.put('/:id', productController.updateProduct);
