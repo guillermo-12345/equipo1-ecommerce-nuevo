@@ -49,7 +49,7 @@ export default ItemListContainer;
 
  */
 import React, { useEffect, useState } from "react";
-import axiosInstance from "../service/axiosConfig";
+import axios from "../service/axiosConfig";
 
 const ItemListContainer = () => {
   const [products, setProducts] = useState([]);
@@ -57,7 +57,7 @@ const ItemListContainer = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axiosInstance.get("/products");
+        const response = await axios.get("/products");
         setProducts(response.data.filter((product) => product.stock > 0));
       } catch (error) {
         console.error("Error al obtener los productos:", error);

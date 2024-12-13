@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const axiosInstance = axios.create({
-  baseURL: "https://nombre-proyecto-backend.vercel.app/api",
+const axios = axios.create({
+  baseURL: "https://nombre-backend-vercel.vercel.app/api", 
 });
 
-export default axiosInstance;
+export default axios;

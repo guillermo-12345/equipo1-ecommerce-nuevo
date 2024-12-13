@@ -8,26 +8,33 @@ const productRoutes = require('./routes/productRoutes');
 const clientRoutes = require('./routes/clientRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const emailRoutes = require('./routes/emailRoutes');
-const purchaseRoutes = require('./routes/purchasesRoutes'); 
+const purchaseRoutes = require('./routes/purchasesRoutes');
 const { dbConnection } = require('./config/db');
 require('dotenv').config();
 
 // Inicializar express
 const app = express();
 
-// Middleware
-const allowedOrigins = [
-  "https://equipo1-ecommerce-nuevo.vercel.app"
-];
+// Middleware para manejo de CORS
+const allowedOrigins = ["https://equipo1-ecommerce-nuevo.vercel.app"]; 
 
 app.use(
   cors({
     origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
+    credentials: true, 
   })
 );
 
+// Encabezados para CORS (necesarios para navegadores estrictos)
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://equipo1-ecommerce-nuevo.vercel.app"); 
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  next();
+});
+
+// Middleware
 app.use(express.json());
 app.use(bodyParser.json());
 
@@ -65,9 +72,6 @@ dbConnection.sync().then(() => {
   app.listen(port, () => {
     console.log(`Servidor corriendo en el puerto ${port}`);
   });
-})
-  .catch((error) => {
-    console.error('Error al sincronizar la base de datos:', error);
-  });
-
-
+}).catch((error) => {
+  console.error('Error al sincronizar la base de datos:', error);
+});
