@@ -58,11 +58,7 @@ const ItemListContainer = () => {
     const fetchProducts = async () => {
       try {
         const response = await axiosInstance.get("/products");
-        console.log("Respuesta de la API:", response.data);
-
-        // Validar que response.data sea un array
-        const data = Array.isArray(response.data) ? response.data : [];
-        setProducts(data.filter((product) => product.stock > 0));
+        setProducts(response.data.filter((product) => product.stock > 0));
       } catch (error) {
         console.error("Error al obtener los productos:", error);
       }
