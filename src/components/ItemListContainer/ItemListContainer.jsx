@@ -48,9 +48,8 @@ export default ItemListContainer;
 
 
  */
-
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "./axiosInstance";
 
 const ItemListContainer = () => {
   const [products, setProducts] = useState([]);
@@ -58,17 +57,20 @@ const ItemListContainer = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/products`);
+        const response = await axiosInstance.get("/products");
+        console.log("Respuesta de la API:", response.data);
+
+        // Validar que response.data sea un array
         const data = Array.isArray(response.data) ? response.data : [];
         setProducts(data.filter((product) => product.stock > 0));
       } catch (error) {
-        console.error('Error al obtener los productos:', error);
+        console.error("Error al obtener los productos:", error);
       }
     };
-  
+
     fetchProducts();
   }, []);
-  
+
   return (
     <div>
       <h1>Lista de Productos</h1>
