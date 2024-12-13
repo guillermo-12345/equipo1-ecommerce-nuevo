@@ -52,7 +52,7 @@ const port = process.env.PORT || 3001;
 dbConnection.authenticate()
   .then(() => {
     console.log('Base de datos sincronizada');
-    app.listen(port,"8.0.8.0", () => {
+    app.listen(port, "0.0.0.0", () => {
       console.log(`Servidor escuchando en el puerto ${port}`);
     });
   })
@@ -60,5 +60,8 @@ dbConnection.authenticate()
     console.error('Error al sincronizar la base de datos:', error);
   });
 
+
+
+  
 
   
