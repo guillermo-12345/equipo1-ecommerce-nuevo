@@ -61,13 +61,11 @@ const ItemListContainer = () => {
       try {
         setLoading(true);
         const response = await axios.get("/products");
-        console.log("API Response:", response); // Log the entire response
+        console.log("API Response:", response);
 
-        // Check if response.data is an array
         if (Array.isArray(response.data)) {
           setProducts(response.data.filter((product) => product.stock > 0));
         } else if (typeof response.data === 'object' && response.data !== null) {
-          // If it's an object, it might be wrapped in a data property
           const productsArray = response.data.data || Object.values(response.data);
           if (Array.isArray(productsArray)) {
             setProducts(productsArray.filter((product) => product.stock > 0));
