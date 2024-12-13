@@ -49,7 +49,7 @@ export default ItemListContainer;
 
  */
 import React, { useEffect, useState } from "react";
-import axiosInstance from "./axiosInstance";
+import axiosInstance from "../service/axiosConfig";
 
 const ItemListContainer = () => {
   const [products, setProducts] = useState([]);
