@@ -48,37 +48,45 @@ export default ItemListContainer;
 
 
  */
-import React, { useEffect, useState } from "react";
-import axios from "../service/axiosConfig";
-
 const ItemListContainer = () => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        setLoading(true);
         const response = await axios.get("/products");
         setProducts(response.data.filter((product) => product.stock > 0));
       } catch (error) {
         console.error("Error al obtener los productos:", error);
+        setError("Error al cargar los productos. Por favor, intente de nuevo más tarde.");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchProducts();
   }, []);
 
+  if (loading) return <div>Cargando productos...</div>;
+  if (error) return <div>{error}</div>;
+
   return (
     <div>
       <h1>Lista de Productos</h1>
-      <ul>
-        {products.map((product) => (
-          <li key={product.id}>
-            {product.title} - Stock: {product.stock}
-          </li>
-        ))}
-      </ul>
+      {products.length === 0 ? (
+        <p>No hay productos disponibles en este momento.</p>
+      ) : (
+        <ul>
+          {products.map((product) => (
+            <li key={product.id}>
+              {product.title} - Stock: {product.stock}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
-
-export default ItemListContainer;
