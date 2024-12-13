@@ -21,6 +21,7 @@ const allowedOrigins = [process.env.FRONTEND_URL || "https://equipo1-ecommerce-n
 app.use(
   cors({
     origin: function(origin, callback) {
+      console.log('Request origin:', origin);
       if (!origin) return callback(null, true);
       if (allowedOrigins.indexOf(origin) === -1) {
         var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
@@ -33,11 +34,12 @@ app.use(
   })
 );
 
-// Encabezados para CORS (necesarios para navegadores estrictos)
+app.use(bodyParser.json());
+
+// Debugging middleware
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://equipo1-ecommerce-nuevo.vercel.app"); 
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  console.log(`${req.method} request to ${req.url}`);
+  console.log('Headers:', req.headers);
   next();
 });
 
