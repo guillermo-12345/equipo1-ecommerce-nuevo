@@ -48,10 +48,8 @@ export default ItemListContainer;
 
 
  */
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import ItemList from "../ItemList/ItemList";
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import axios from "../service/axiosConfig";
 
 const ItemListContainer = () => {
   const [products, setProducts] = useState([]);
@@ -63,7 +61,22 @@ const ItemListContainer = () => {
       try {
         setLoading(true);
         const response = await axios.get("/products");
-        setProducts(response.data.filter((product) => product.stock > 0));
+        console.log("API Response:", response); // Log the entire response
+
+        // Check if response.data is an array
+        if (Array.isArray(response.data)) {
+          setProducts(response.data.filter((product) => product.stock > 0));
+        } else if (typeof response.data === 'object' && response.data !== null) {
+          // If it's an object, it might be wrapped in a data property
+          const productsArray = response.data.data || Object.values(response.data);
+          if (Array.isArray(productsArray)) {
+            setProducts(productsArray.filter((product) => product.stock > 0));
+          } else {
+            throw new Error("Unexpected data format");
+          }
+        } else {
+          throw new Error("Unexpected response format");
+        }
       } catch (error) {
         console.error("Error al obtener los productos:", error);
         setError("Error al cargar los productos. Por favor, intente de nuevo más tarde.");
@@ -97,3 +110,4 @@ const ItemListContainer = () => {
 };
 
 export default ItemListContainer;
+
