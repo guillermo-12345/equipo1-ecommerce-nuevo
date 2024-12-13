@@ -16,7 +16,10 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-const allowedOrigins = ["https://equipo1-ecommerce-nuevo.vercel.app"];
+const allowedOrigins = [
+  "https://equipo1-ecommerce-nuevo.vercel.app",
+  "https://equipo1-ecommerce-nuevo-8kewsaqxn-guillermo-12345s-projects.vercel.app"
+];
 
 app.use(
   cors({
@@ -25,7 +28,6 @@ app.use(
     credentials: true,
   })
 );
-
 
 app.use(express.json());
 app.use(bodyParser.json());
