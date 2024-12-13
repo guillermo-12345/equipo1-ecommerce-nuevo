@@ -11,7 +11,7 @@ const ItemDetailContainer = () => {
 
   const fetchProduct = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/products`); 
+      const response = await axios.get(`/api/products`); 
       setProduct(response.data);
     } catch (error) {
       console.error('Error fetching product data:', error);

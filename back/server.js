@@ -17,8 +17,7 @@ const app = express();
 
 // Middleware
 const allowedOrigins = [
-  "https://equipo1-ecommerce-nuevo.vercel.app",
-  "https://equipo1-ecommerce-nuevo-8kewsaqxn-guillermo-12345s-projects.vercel.app"
+  "https://equipo1-ecommerce-nuevo.vercel.app"
 ];
 
 app.use(
