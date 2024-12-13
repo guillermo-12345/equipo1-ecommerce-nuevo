@@ -11,7 +11,7 @@ const ItemDetailContainer = () => {
 
   const fetchProduct = async () => {
     try {
-      const response = await axios.get(`/api/products/${itemId}`); // Asegúrate de que esta URL sea correcta
+      const response = await axios.get(`/api/products/${itemId}`); 
       setProduct(response.data);
     } catch (error) {
       console.error('Error fetching product data:', error);
