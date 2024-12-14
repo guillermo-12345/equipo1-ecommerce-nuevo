@@ -2,25 +2,26 @@ const Product = require('../models/Product');
 
 // Obtener todos los productos
 exports.getAllProducts = async (req, res) => {
-  const { category } = req.query; // Tomar la categoría desde los query params
+  const { category } = req.query;
 
   try {
+    console.log('Fetching products. Category:', category);
     let products;
 
     if (category) {
-      // Si se proporciona una categoría, filtrar por ella
       products = await Product.findAll({ where: { category } });
     } else {
-      // Si no se proporciona categoría, devolver todos los productos
       products = await Product.findAll();
     }
 
+    console.log('Products fetched:', products.length);
     res.status(200).json(products);
   } catch (error) {
-    console.error('Error obteniendo los productos:', error);
-    res.status(500).json({ error: 'Error obteniendo los productos' });
+    console.error('Error fetching products:', error);
+    res.status(500).json({ error: 'Error fetching products', details: error.message });
   }
 };
+
 
 // Obtener un producto por ID
 exports.getProductById = async (req, res) => {
