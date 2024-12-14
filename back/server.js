@@ -15,11 +15,16 @@ require('dotenv').config();
 // Inicializar express
 const app = express();
 
+// CORS configuration
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'https://equipo1-ecommerce-nuevo.vercel.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
 }));
+
+// Handle preflight requests
+app.options('*', cors());
 
 app.use(bodyParser.json());
 
@@ -60,6 +65,11 @@ app.get('/', (req, res) => res.send('Servidor corriendo...'));
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Algo salió mal. Intenta nuevamente.' });
+});
+
+// Health check route
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'OK' });
 });
 
 // Conectar y sincronizar la base de datos

@@ -22,7 +22,6 @@ exports.getAllProducts = async (req, res) => {
   }
 };
 
-
 // Obtener un producto por ID
 exports.getProductById = async (req, res) => {
   const { id } = req.params;
