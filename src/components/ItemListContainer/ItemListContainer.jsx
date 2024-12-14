@@ -48,54 +48,58 @@ export default ItemListContainer;
 
 
  */
+import React, { useEffect, useState } from 'react';
+import axiosInstance from '../services/api';
+import ItemList from "../ItemList/ItemList";
+import { useParams } from 'react-router-dom';
 
-import React, { useEffect, useState } from "react";
-import axios from "../service/axiosConfig";
-
-const ItemListContainer = () => {
+const ItemListContainer = ({ greeting }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { categoryId } = useParams(); 
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axiosInstance.get('/products');
+      console.log('API Response:', response.data); // Log the response data
+      const productsInStock = response.data.filter(product => product.stock > 0);
+      const filteredProducts = categoryId
+        ? productsInStock.filter(product => product.category.toLowerCase() === categoryId.toLowerCase())
+        : productsInStock;
+      setProducts(filteredProducts);
+    } catch (error) {
+      console.error("Error al obtener los productos:", error);
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        setError(`Error del servidor: ${error.response.status} - ${error.response.data.message || 'Unknown error'}`);
+      } else if (error.request) {
+        // The request was made but no response was received
+        setError("No se recibió respuesta del servidor. Verifique su conexión.");
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        setError(`Error: ${error.message}`);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get("/products");
-        console.log("API Response:", response);
-
-        if (Array.isArray(response.data)) {
-          setProducts(response.data.filter((product) => product.stock > 0));
-        } else {
-          throw new Error("Unexpected response format");
-        }
-      } catch (error) {
-        console.error("Error al obtener los productos:", error);
-        setError(`Error al cargar los productos: ${error.message}`);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchProducts();
-  }, []);
+  }, [categoryId]);
 
-  if (loading) return <div>Cargando productos...</div>;
-  if (error) return <div>{error}</div>;
+  if (loading) return <div>Cargando...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div>
-      <h1>Lista de Productos</h1>
+      <h1>{greeting}</h1>
       {products.length === 0 ? (
         <p>No hay productos disponibles en este momento.</p>
       ) : (
-        <ul>
-          {products.map((product) => (
-            <li key={product.id}>
-              {product.title} - Stock: {product.stock}
-            </li>
-          ))}
-        </ul>
+        <ItemList products={products} />
       )}
     </div>
   );
