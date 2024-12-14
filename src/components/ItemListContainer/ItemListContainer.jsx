@@ -49,7 +49,7 @@ export default ItemListContainer;
 
  */
 import React, { useEffect, useState } from 'react';
-import axiosInstance from '../services/api';
+import axiosInstance from '../service/api';
 import ItemList from "../ItemList/ItemList";
 import { useParams } from 'react-router-dom';
 
