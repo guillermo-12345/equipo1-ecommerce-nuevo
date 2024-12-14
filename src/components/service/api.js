@@ -1,19 +1,8 @@
-import axios from "axios";
+const api = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL || 'https://nombre-backend-vercel.vercel.app/',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
-export const fetchProtectedData = async () => {
-  const token = localStorage.getItem("firebaseToken");
-
-  try {
-    const response = await axios.get("/api/protected-data", {
-      headers: {
-        Authorization: `Bearer ${token}`, 
-      },
-    });
-    
-    console.log("Datos protegidos:", response.data); 
-    return response.data; 
-  } catch (error) {
-    console.error("Error al obtener los datos protegidos:", error);
-    throw error; 
-  }
-};
+export default api;
