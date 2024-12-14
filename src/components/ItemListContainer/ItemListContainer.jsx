@@ -48,6 +48,7 @@ export default ItemListContainer;
 
 
  */
+
 import React, { useEffect, useState } from "react";
 import axios from "../service/axiosConfig";
 
@@ -65,19 +66,12 @@ const ItemListContainer = () => {
 
         if (Array.isArray(response.data)) {
           setProducts(response.data.filter((product) => product.stock > 0));
-        } else if (typeof response.data === 'object' && response.data !== null) {
-          const productsArray = response.data.data || Object.values(response.data);
-          if (Array.isArray(productsArray)) {
-            setProducts(productsArray.filter((product) => product.stock > 0));
-          } else {
-            throw new Error("Unexpected data format");
-          }
         } else {
           throw new Error("Unexpected response format");
         }
       } catch (error) {
         console.error("Error al obtener los productos:", error);
-        setError("Error al cargar los productos. Por favor, intente de nuevo más tarde.");
+        setError(`Error al cargar los productos: ${error.message}`);
       } finally {
         setLoading(false);
       }

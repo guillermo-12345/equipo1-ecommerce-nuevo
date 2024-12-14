@@ -15,24 +15,11 @@ require('dotenv').config();
 // Inicializar express
 const app = express();
 
-// Middleware para manejo de CORS
-const allowedOrigins = [process.env.FRONTEND_URL || "https://equipo1-ecommerce-nuevo.vercel.app"];
-
-app.use(
-  cors({
-    origin: function(origin, callback) {
-      console.log('Request origin:', origin);
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1) {
-        var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-        return callback(new Error(msg), false);
-      }
-      return callback(null, true);
-    },
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'https://equipo1-ecommerce-nuevo.vercel.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+}));
 
 app.use(bodyParser.json());
 
@@ -42,6 +29,7 @@ app.use((req, res, next) => {
   console.log('Headers:', req.headers);
   next();
 });
+
 
 // Middleware
 app.use(express.json());
