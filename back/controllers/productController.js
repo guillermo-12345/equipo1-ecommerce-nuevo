@@ -6,6 +6,8 @@ exports.getAllProducts = async (req, res) => {
 
   try {
     console.log('Fetching products. Category:', category);
+    console.log('Request headers:', req.headers);
+    
     let products;
 
     if (category) {
@@ -21,6 +23,8 @@ exports.getAllProducts = async (req, res) => {
     res.status(500).json({ error: 'Error fetching products', details: error.message });
   }
 };
+
+
 
 // Obtener un producto por ID
 exports.getProductById = async (req, res) => {
