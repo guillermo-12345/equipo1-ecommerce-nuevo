@@ -11,13 +11,14 @@ const axiosInstance = axios.create({
   withCredentials: true
 });
 
-// Add request interceptor for debugging
+// Request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
     console.log('Request Config:', {
       url: config.url,
       method: config.method,
-      headers: config.headers
+      headers: config.headers,
+      baseURL: config.baseURL
     });
     return config;
   },
@@ -27,7 +28,7 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// Add response interceptor for debugging
+// Response interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
     console.log('Response:', response);
