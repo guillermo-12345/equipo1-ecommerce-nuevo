@@ -1,45 +1,35 @@
 import axios from "axios";
 
-const baseURL = process.env.NEXT_PUBLIC_API_URL || 'https://nombre-backend-vercel.vercel.app';
-
 const axiosInstance = axios.create({
-  baseURL,
-  headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
-  },
-  withCredentials: true
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "https://nombre-backend-vercel.vercel.app/api",
+  withCredentials: true,
 });
 
-// Request interceptor
-axiosInstance.interceptors.request.use(
-  (config) => {
-    console.log('Request Config:', {
-      url: config.url,
-      method: config.method,
-      headers: config.headers,
-      baseURL: config.baseURL
-    });
-    return config;
-  },
-  (error) => {
-    console.error('Request Error:', error);
-    return Promise.reject(error);
-  }
-);
+axiosInstance.interceptors.request.use(request => {
+  console.log('Starting Request', JSON.stringify(request, null, 2));
+  return request;
+});
 
-// Response interceptor
 axiosInstance.interceptors.response.use(
-  (response) => {
-    console.log('Response:', response);
+  response => {
+    console.log('Response:', JSON.stringify(response, null, 2));
     return response;
   },
-  (error) => {
-    console.error('Response Error:', {
-      message: error.message,
-      response: error.response?.data,
-      status: error.response?.status
-    });
+  error => {
+    console.log('Response Error:', error);
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.log(error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.log('Error', error.message);
+    }
     return Promise.reject(error);
   }
 );
