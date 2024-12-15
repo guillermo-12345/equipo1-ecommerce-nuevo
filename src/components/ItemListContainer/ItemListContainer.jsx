@@ -59,36 +59,42 @@ const ItemListContainer = ({ greeting }) => {
   const [error, setError] = useState(null);
   const { categoryId } = useParams();
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        // Test the health endpoint first
-        await axiosInstance.get('/api/health');
-        
-        // If health check passes, fetch products
-        const response = await axiosInstance.get('/api/products');
-        const productsInStock = response.data.filter(product => product.stock > 0);
-        
-        const filteredProducts = categoryId
-          ? productsInStock.filter(product => 
-              product.category.toLowerCase() === categoryId.toLowerCase())
-          : productsInStock;
-
-        setProducts(filteredProducts);
-        setError(null);
-      } catch (error) {
-        console.error("Error al obtener los productos:", error);
-        setError(
-          error.response 
-            ? `Error del servidor: ${error.response.status} - ${error.response.data?.message || 'Error desconocido'}`
-            : 'Error de conexión al servidor'
-        );
-      } finally {
-        setLoading(false);
+  const fetchProducts = async () => {
+    try {
+      // Check health first (note: no /api prefix needed here)
+      await axiosInstance.get('/health');
+      
+      // Then fetch products
+      const response = await axiosInstance.get('/products');
+      console.log('Products response:', response);
+      
+      if (!response.data || !Array.isArray(response.data.data)) {
+        throw new Error('Invalid response format from server');
       }
-    };
 
+      const productsData = response.data.data;
+      const productsInStock = productsData.filter(product => product.stock > 0);
+      
+      const filteredProducts = categoryId
+        ? productsInStock.filter(product => 
+            product.category.toLowerCase() === categoryId.toLowerCase())
+        : productsInStock;
+
+      setProducts(filteredProducts);
+      setError(null);
+    } catch (error) {
+      console.error("Error al obtener los productos:", error);
+      setError(
+        error.response 
+          ? `Error del servidor: ${error.response.status} - ${error.response.data?.message || 'Error desconocido'}`
+          : 'Error de conexión al servidor'
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchProducts();
   }, [categoryId]);
 
