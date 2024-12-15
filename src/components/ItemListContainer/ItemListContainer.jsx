@@ -49,7 +49,7 @@ export default ItemListContainer;
 
  */
 import React, { useEffect, useState } from 'react';
-import axiosInstance from '../service/api';
+import axiosInstance from '../service/axiosConfig';
 import ItemList from "../ItemList/ItemList";
 import { useParams } from 'react-router-dom';
 
@@ -57,30 +57,29 @@ const ItemListContainer = ({ greeting }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { categoryId } = useParams(); 
+  const { categoryId } = useParams();
 
   const fetchProducts = async () => {
     try {
-      const response = await axiosInstance.get('/products');
-      console.log('API Response:', response.data); // Log the response data
+      console.log('Fetching products...');
+      const response = await axiosInstance.get('/api/products');
+      console.log('Products response:', response);
+      
       const productsInStock = response.data.filter(product => product.stock > 0);
       const filteredProducts = categoryId
-        ? productsInStock.filter(product => product.category.toLowerCase() === categoryId.toLowerCase())
+        ? productsInStock.filter(product => 
+            product.category.toLowerCase() === categoryId.toLowerCase())
         : productsInStock;
+
       setProducts(filteredProducts);
+      setError(null);
     } catch (error) {
       console.error("Error al obtener los productos:", error);
-      if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        setError(`Error del servidor: ${error.response.status} - ${error.response.data.message || 'Unknown error'}`);
-      } else if (error.request) {
-        // The request was made but no response was received
-        setError("No se recibió respuesta del servidor. Verifique su conexión.");
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        setError(`Error: ${error.message}`);
-      }
+      setError(
+        error.response 
+          ? `Error: ${error.response.status} - ${error.response.data?.error || 'Unknown error'}`
+          : 'Error de conexión al servidor'
+      );
     } finally {
       setLoading(false);
     }
@@ -90,8 +89,8 @@ const ItemListContainer = ({ greeting }) => {
     fetchProducts();
   }, [categoryId]);
 
-  if (loading) return <div>Cargando...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <div>Cargando productos...</div>;
+  if (error) return <div className="error-message">{error}</div>;
 
   return (
     <div>
