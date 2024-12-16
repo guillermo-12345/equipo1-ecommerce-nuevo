@@ -61,14 +61,16 @@ const ItemListContainer = ({ greeting }) => {
 
   const fetchProducts = async () => {
     try {
-      // Check health first (note: no /api prefix needed here)
+      setLoading(true);
+      setError(null);
+      
+      // First check if the API is accessible
       await axiosInstance.get('/health');
       
       // Then fetch products
       const response = await axiosInstance.get('/products');
-      console.log('Products response:', response);
       
-      if (!response.data || !Array.isArray(response.data.data)) {
+      if (!response.data?.data) {
         throw new Error('Invalid response format from server');
       }
 
@@ -81,13 +83,12 @@ const ItemListContainer = ({ greeting }) => {
         : productsInStock;
 
       setProducts(filteredProducts);
-      setError(null);
     } catch (error) {
       console.error("Error al obtener los productos:", error);
       setError(
-        error.response 
-          ? `Error del servidor: ${error.response.status} - ${error.response.data?.message || 'Error desconocido'}`
-          : 'Error de conexión al servidor'
+        error.response?.data?.message || 
+        error.message || 
+        'Error de conexión al servidor'
       );
     } finally {
       setLoading(false);
@@ -114,4 +115,3 @@ const ItemListContainer = ({ greeting }) => {
 };
 
 export default ItemListContainer;
-

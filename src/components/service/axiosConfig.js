@@ -1,6 +1,5 @@
 import axios from "axios";
 
-// Remove '/api' from the base URL as it's handled by the routing
 const baseURL = process.env.NEXT_PUBLIC_API_URL || 'https://nombre-backend-vercel.vercel.app';
 
 const axiosInstance = axios.create({
@@ -15,14 +14,17 @@ const axiosInstance = axios.create({
 // Request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    // Add /api prefix to all requests
-    config.url = `/api${config.url}`;
+    // Remove any duplicate /api prefixes
+    const url = config.url?.startsWith('/api') 
+      ? config.url 
+      : `/api${config.url}`;
+    
+    config.url = url.replace('/api/api/', '/api/');
     
     console.log('Request:', {
       url: `${config.baseURL}${config.url}`,
       method: config.method,
-      headers: config.headers,
-      data: config.data
+      headers: config.headers
     });
     return config;
   },
@@ -37,17 +39,15 @@ axiosInstance.interceptors.response.use(
   (response) => {
     console.log('Response:', {
       status: response.status,
-      data: response.data,
-      headers: response.headers
+      data: response.data
     });
     return response;
   },
   (error) => {
     console.error('Response Error:', {
       message: error.message,
-      response: error.response?.data,
       status: error.response?.status,
-      config: error.config
+      data: error.response?.data
     });
     return Promise.reject(error);
   }
