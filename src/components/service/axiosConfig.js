@@ -14,7 +14,7 @@ const axiosInstance = axios.create({
 // Request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    // Remove any duplicate /api prefixes
+    // Ensure the URL starts with /api
     const url = config.url?.startsWith('/api') 
       ? config.url 
       : `/api${config.url}`;
