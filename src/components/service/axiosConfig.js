@@ -5,14 +5,14 @@ const baseURL = process.env.NEXT_PUBLIC_API_URL || 'https://nombre-backend-verce
 const axiosInstance = axios.create({
   baseURL,
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
   }
 });
 
 // Request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    // Ensure the URL starts with /api
     const url = config.url?.startsWith('/api') 
       ? config.url 
       : `/api${config.url}`;
@@ -21,8 +21,7 @@ axiosInstance.interceptors.request.use(
     
     console.log('Request:', {
       url: `${config.baseURL}${config.url}`,
-      method: config.method,
-      headers: config.headers
+      method: config.method
     });
     return config;
   },
