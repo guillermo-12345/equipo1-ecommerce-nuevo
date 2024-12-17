@@ -5,28 +5,23 @@ const baseURL = process.env.NEXT_PUBLIC_API_URL || 'https://nombre-backend-verce
 const axiosInstance = axios.create({
   baseURL,
   headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
+    'Content-Type': 'application/json'
   }
 });
 
 // Request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    const url = config.url?.startsWith('/api') 
-      ? config.url 
-      : `/api${config.url}`;
+    // Ensure URL starts with /api
+    if (!config.url.startsWith('/api')) {
+      config.url = `/api${config.url}`;
+    }
     
-    config.url = url.replace('/api/api/', '/api/');
-    
-    console.log('Request:', {
-      url: `${config.baseURL}${config.url}`,
-      method: config.method
-    });
+    console.log('Making request to:', config.url);
     return config;
   },
   (error) => {
-    console.error('Request Error:', error);
+    console.error('Request error:', error);
     return Promise.reject(error);
   }
 );
@@ -37,11 +32,16 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.error('Response Error:', {
-      message: error.message,
-      status: error.response?.status,
-      data: error.response?.data
-    });
+    if (error.response) {
+      // Server responded with error
+      console.error('Server error:', error.response.data);
+    } else if (error.request) {
+      // Request made but no response
+      console.error('Network error - no response received');
+    } else {
+      // Error in request configuration
+      console.error('Request configuration error:', error.message);
+    }
     return Promise.reject(error);
   }
 );
