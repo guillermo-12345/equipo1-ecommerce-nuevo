@@ -7,7 +7,8 @@ const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
-  }
+  },
+  withCredentials: true
 });
 
 // Request interceptor
@@ -19,6 +20,9 @@ axiosInstance.interceptors.request.use(
       : `/api${config.url}`;
     
     config.url = url.replace('/api/api/', '/api/');
+    
+    // Add origin header
+    config.headers['Origin'] = 'https://equipo1-ecommerce-nuevo.vercel.app';
     
     console.log('Request:', {
       url: `${config.baseURL}${config.url}`,
