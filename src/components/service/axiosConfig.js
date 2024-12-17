@@ -5,10 +5,8 @@ const baseURL = process.env.NEXT_PUBLIC_API_URL || 'https://nombre-backend-verce
 const axiosInstance = axios.create({
   baseURL,
   headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
-  },
-  withCredentials: true
+    'Content-Type': 'application/json'
+  }
 });
 
 // Request interceptor
@@ -20,9 +18,6 @@ axiosInstance.interceptors.request.use(
       : `/api${config.url}`;
     
     config.url = url.replace('/api/api/', '/api/');
-    
-    // Add origin header
-    config.headers['Origin'] = 'https://equipo1-ecommerce-nuevo.vercel.app';
     
     console.log('Request:', {
       url: `${config.baseURL}${config.url}`,
@@ -40,10 +35,6 @@ axiosInstance.interceptors.request.use(
 // Response interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
-    console.log('Response:', {
-      status: response.status,
-      data: response.data
-    });
     return response;
   },
   (error) => {
