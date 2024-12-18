@@ -7,7 +7,8 @@ const axiosInstance = axios.create({
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json'
-  }
+  },
+  timeout: 10000 // 10 second timeout
 });
 
 // Request interceptor
@@ -18,7 +19,6 @@ axiosInstance.interceptors.request.use(
       config.url = `/api${config.url}`;
     }
     
-    // Log the request
     console.log('[API Request]:', {
       method: config.method?.toUpperCase(),
       url: `${config.baseURL}${config.url}`,
@@ -61,10 +61,6 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-// Add global defaults
-axiosInstance.defaults.timeout = 10000; // 10 second timeout
-axiosInstance.defaults.maxRedirects = 5;
 
 export default axiosInstance;
 
