@@ -48,7 +48,6 @@ export default ItemListContainer;
 
 
  */
-import React, { useEffect, useState } from 'react';
 import axiosInstance from '../service/axiosConfig';
 import ItemList from "../ItemList/ItemList";
 import { useParams } from 'react-router-dom';
@@ -115,3 +114,4 @@ const ItemListContainer = ({ greeting }) => {
 };
 
 export default ItemListContainer;
+
