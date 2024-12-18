@@ -30,13 +30,15 @@ axiosInstance.interceptors.request.use(
 // Response interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
+    console.log('Response received:', response.data);
     return response;
   },
   (error) => {
     if (error.response) {
       console.error('Response error:', {
         status: error.response.status,
-        data: error.response.data
+        data: error.response.data,
+        headers: error.response.headers
       });
     } else if (error.request) {
       console.error('Network error:', error.message);
