@@ -8,50 +8,22 @@ const productRoutes = require('./routes/productRoutes');
 const clientRoutes = require('./routes/clientRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const emailRoutes = require('./routes/emailRoutes');
-const purchaseRoutes = require('./routes/purchasesRoutes');
+const purchaseRoutes = require('./routes/purchasesRoutes'); 
 const { dbConnection } = require('./config/db');
-require('dotenv').config();
 
 // Inicializar express
 const app = express();
 
-// CORS configuration
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'https://equipo1-ecommerce-nuevo.vercel.app',
-  credentials: true,
-}));
-
-// CORS configuration
-// app.use(cors({
-//   origin: function (origin, callback) {
-//     if (!origin) return callback(null, true);
-//     if (allowedOrigins.indexOf(origin) === -1) {
-//       var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
-//       return callback(new Error(msg), false);
-//     }
-//     return callback(null, true);
-//   },
-//   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-//   allowedHeaders: ['Content-Type', 'Authorization'],
-//   credentials: true,
-// }));
-
-// Handle preflight requests
-app.options('*', cors());
-
-app.use(bodyParser.json());
-
-// Debugging middleware
-app.use((req, res, next) => {
-  console.log(`${req.method} request to ${req.url}`);
-  console.log('Headers:', req.headers);
-  next();
-});
-
 // Middleware
+app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(express.json());
 app.use(bodyParser.json());
 
+// Middleware de log de solicitudes
+app.use((req, res, next) => {
+  console.log(`Solicitud recibida: ${req.method} ${req.url}`);
+  next();
+});
 
 // Rutas de autenticación
 app.use('/auth', authRoutes);
@@ -74,21 +46,19 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Algo salió mal. Intenta nuevamente.' });
 });
 
-// Health check route
-app.get('/api/health', (req, res) => {
-  res.status(200).json({ status: 'OK' });
-});
-
 // Conectar y sincronizar la base de datos
 const port = process.env.PORT || 3001;
 
-dbConnection.sync().then(() => {
-  app.listen(port, () => {
-    console.log(`Servidor corriendo en el puerto ${port}`);
+dbConnection.authenticate()
+  .then(() => {
+    console.log('Base de datos sincronizada');
+    app.listen(port, () => {
+      console.log(`Servidor escuchando en el puerto ${port}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Error al sincronizar la base de datos:', error);
   });
-}).catch((error) => {
-  console.error('Error al sincronizar la base de datos:', error);
-});
 
 
-module.exports=app
+  
