@@ -4,6 +4,7 @@ const baseURL = process.env.NEXT_PUBLIC_API_URL || 'https://nombre-backend-verce
 
 const axiosInstance = axios.create({
   baseURL,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json'
   }
@@ -16,9 +17,32 @@ axiosInstance.interceptors.request.use(
     if (!config.url.startsWith('/api')) {
       config.url = `/api${config.url}`;
     }
+    
+    console.log('Making request to:', `${config.baseURL}${config.url}`);
     return config;
   },
   (error) => {
+    console.error('Request error:', error);
+    return Promise.reject(error);
+  }
+);
+
+// Response interceptor
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response) {
+      console.error('Response error:', {
+        status: error.response.status,
+        data: error.response.data
+      });
+    } else if (error.request) {
+      console.error('Network error:', error.message);
+    } else {
+      console.error('Error:', error.message);
+    }
     return Promise.reject(error);
   }
 );
