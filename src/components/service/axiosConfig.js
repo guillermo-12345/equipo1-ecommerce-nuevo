@@ -14,7 +14,11 @@ const axiosInstance = axios.create({
 // Request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    // Log the full URL being requested
+    // Ensure URL starts with /api for product requests
+    if (config.url.includes('/products') && !config.url.startsWith('/api')) {
+      config.url = `/api${config.url}`;
+    }
+    
     console.log('[API Request]:', {
       method: config.method?.toUpperCase(),
       url: `${config.baseURL}${config.url}`,
