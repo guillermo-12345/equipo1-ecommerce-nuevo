@@ -64,7 +64,7 @@ const ItemListContainer = ({ greeting }) => {
       setLoading(true);
       setError(null);
       
-      // First check if the API is accessible
+      // Check API health first
       await axiosInstance.get('/health');
       
       // Then fetch products

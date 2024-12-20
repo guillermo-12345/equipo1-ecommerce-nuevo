@@ -14,8 +14,8 @@ const axiosInstance = axios.create({
 // Request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    // Ensure URL starts with /api for product requests
-    if (config.url.includes('/products') && !config.url.startsWith('/api')) {
+    // Always ensure URLs start with /api
+    if (!config.url.startsWith('/api')) {
       config.url = `/api${config.url}`;
     }
     
