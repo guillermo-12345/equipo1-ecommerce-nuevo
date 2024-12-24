@@ -49,7 +49,7 @@ export default ItemListContainer;
 
  */
 import React, { useEffect, useState } from 'react';
-import axiosInstance from '../service/axiosConfig';
+import axios from 'axios';
 import ItemList from "../ItemList/ItemList";
 import { useParams } from 'react-router-dom';
 
@@ -65,10 +65,10 @@ const ItemListContainer = ({ greeting }) => {
       setError(null);
       
       // Check API health first
-      await axiosInstance.get('/health');
+      await axios.get('/health');
       
       // Then fetch products
-      const response = await axiosInstance.get('/products');
+      const response = await axios.get('/products');
       
       if (!response.data?.data) {
         throw new Error('Invalid response format from server');
